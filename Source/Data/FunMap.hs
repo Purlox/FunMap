@@ -2,6 +2,9 @@ module FunMap (
     empty,
     singleton,
     
+    (!),
+    at,
+    
     insert,
     delete,
     
@@ -32,6 +35,14 @@ delete :: (Eq k) => k -> FunMap k v -> FunMap k v
 delete key (FunMap f) = FunMap g
     where g x | x == key  = Nothing
               | otherwise = f x
+
+
+at :: FunMap k v -> k -> v
+FunMap f `at` x = maybe (error "Error: element not found in the FunMap.") id $ f x
+
+
+(!) :: FunMap k v -> k -> Maybe v
+FunMap f ! x = f x
 
 
 toList :: (Enum k) => FunMap k v -> [(k, v)]
