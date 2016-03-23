@@ -16,19 +16,19 @@ empty = FunMap f
     where f _ = Nothing
 
 
-singleton :: Eq k => k -> v -> FunMap k v
+singleton :: (Eq k) => k -> v -> FunMap k v
 singleton key value = FunMap f
-    where f x | x == key = Just value
-          f _            = Nothing
+    where f x | x == key  = Just value
+              | otherwise = Nothing
 
 
-insert :: Eq k => k -> v -> FunMap k v -> FunMap k v
+insert :: (Eq k) => k -> v -> FunMap k v -> FunMap k v
 insert key value (FunMap f) = FunMap g
     where g x | x == key  = Just value
               | otherwise = f x
 
 
-delete :: Eq k => k -> FunMap k v -> FunMap k v
+delete :: (Eq k) => k -> FunMap k v -> FunMap k v
 delete key (FunMap f) = FunMap g
     where g x | x == key  = Nothing
               | otherwise = f x
