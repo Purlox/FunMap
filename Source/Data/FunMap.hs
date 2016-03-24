@@ -19,7 +19,7 @@ instance (Show k, Show v, Enum k) => Show (FunMap k v) where
     show = ("fromList " ++) . show . toList
 
 instance Functor (FunMap k) where
-    fmap g (FunMap f) = FunMap (fmap g . f) 
+    fmap g (FunMap f) = FunMap (fmap g . f)
 
 
 empty :: FunMap k v
