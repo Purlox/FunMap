@@ -1,4 +1,6 @@
 module FunMap (
+    FunMap(),
+
     empty,
     singleton,
     
