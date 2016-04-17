@@ -102,6 +102,7 @@ mapKeysR' :: (Enum k1, Eq k2) => (k1 -> Maybe k2) -> FunMap k1 v -> FunMap k2 v
 mapKeysR' g (FunMap f) = FunMap (invertFunction' g >=> f)
 
 
+-- | Converts a FunMap to a list
 toList :: (Enum k) => FunMap k v -> [(k, v)]
 toList (FunMap f) = [ (x, value) | x <- enumAll, Just value <- [f x] ]
 
