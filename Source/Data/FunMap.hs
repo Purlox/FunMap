@@ -20,6 +20,9 @@ module FunMap (
 
 import Control.Monad ((>=>))
 
+-- | A simple map between key and values.
+--
+-- It's implemented as a function.
 data FunMap k v = FunMap (k -> Maybe v)
 
 instance (Show k, Show v, Enum k) => Show (FunMap k v) where
@@ -29,33 +32,44 @@ instance Functor (FunMap k) where
     fmap g (FunMap f) = FunMap (fmap g . f)
 
 
+-- | Creates an empty FunMap
 empty :: FunMap k v
 empty = FunMap f
     where f _ = Nothing
 
 
+-- | Creates a FunMap with a single element inside it.
 singleton :: (Eq k) => k -> v -> FunMap k v
 singleton key value = FunMap f
     where f x | x == key  = Just value
               | otherwise = Nothing
 
 
+-- | Inserts an element into the FunMap.
+--
+-- Overwrites earlier elements if they share the same keys.
 insert :: (Eq k) => k -> v -> FunMap k v -> FunMap k v
 insert key value (FunMap f) = FunMap g
     where g x | x == key  = Just value
               | otherwise = f x
 
 
+-- | Deletes an element out of the FunMap.
 delete :: (Eq k) => k -> FunMap k v -> FunMap k v
 delete key (FunMap f) = FunMap g
     where g x | x == key  = Nothing
               | otherwise = f x
 
 
+-- | Returns an element from the FunMap if it's in there.
+--
+-- Throws an error if it isn't.
 at :: FunMap k v -> k -> v
-FunMap f `at` x = maybe (error "Error: element not found in the FunMap.") id $ f x
+FunMap f `at` x = maybe err id $ f x
+    where err = error "Error: element with key" ++ x ++ "not found in the FunMap."
 
 
+-- | Safe way to return an element from the FunMap.
 (!) :: FunMap k v -> k -> Maybe v
 FunMap f ! x = f x
 
